@@ -6,7 +6,7 @@ spring:
   application:
     name: backoffice-bff
   profiles:
-    active: prod
+    active: dev
   security:
     oauth2:
       client:
@@ -24,19 +24,32 @@ spring:
 spring:
   config:
     active:
-      on-profile: "prod"
+      on-profile: "dev"
   cloud:
     gateway:
       default-filters:
         - SaveSession
       routes:
-        - id: api
-          uri: http://api.hajime.local
+        - id: user-service
+          uri: ${USER_SERVICE_URI:http://localhost:9000}
           predicates:
-            - Path=/api/*
+            - Path=/api/user-service/**
           filters:
             - TokenRelay
             - StripPrefix=1
+
+        - id: course-service
+          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
+          predicates:
+            - Path=/api/course-service/**
+          filters:
+            - TokenRelay
+            - StripPrefix=1 
+
+        - id: backoffice
+          uri: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
+          predicates:
+            - Path=/**
 ---
 
 service-uri:
