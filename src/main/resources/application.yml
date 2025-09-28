@@ -31,26 +31,30 @@ logging:
       default-filters:
         - SaveSession
       routes:
-        - id: user-service
-          uri: ${USER_SERVICE_URI:http://localhost:9000}
-          predicates:
-            - Path=/api/user-service/**
-          filters:
-            - TokenRelay
-            - StripPrefix=1
-
-        - id: course-service
-          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
-          predicates:
-            - Path=/api/course-service/**
-          filters:
-            - TokenRelay
-            - StripPrefix=1
+#        - id: user-service
+#          uri: ${USER_SERVICE_URI:http://localhost:9000}
+#          predicates:
+#            - Path=/api/user-service/**
+#          filters:
+#            - TokenRelay
+#            - StripPrefix=1
+#
+#        - id: course-service
+#          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
+#          predicates:
+#            - Path=/api/course-service/**
+#          filters:
+#            - TokenRelay
+#            - StripPrefix=1
 
         - id: backoffice
-          uri: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
+          uri: http://localhost:3040
           predicates:
             - Path=/**
+          filters:
+            - RewritePath=/.*,/  # rewrite tất cả path về /
+
+
 
 service-uri:
   services:

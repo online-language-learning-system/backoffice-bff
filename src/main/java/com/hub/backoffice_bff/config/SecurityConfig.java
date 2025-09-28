@@ -1,5 +1,7 @@
 package com.hub.backoffice_bff.config;
 
+import org.springframework.cloud.gateway.route.RouteLocator;
+import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -105,5 +107,14 @@ public class SecurityConfig {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(PREFIX + role))
                 .collect(Collectors.toList());
+    }
+
+    @Bean
+    public RouteLocator devFrontend(RouteLocatorBuilder builder) {
+        return builder.routes()
+                .route("frontend", r -> r.path("/**")
+                        .filters(f -> f.removeRequestHeader("Host"))
+                        .uri("http://localhost:3040"))
+                .build();
     }
 }
