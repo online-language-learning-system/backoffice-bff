@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@EnableConfigurationProperties(ServiceUrlConfig.class)
+//@EnableConfigurationProperties(ServiceUrlConfig.class)
 public class BackofficeBffApplication {
 
 	public static void main(String[] args) {
