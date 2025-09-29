@@ -25,24 +25,28 @@ spring:
         - id: user
           uri: ${USER_SERVICE_URI:http://localhost:9000}
           predicates:
-            - Path=/api/**
+            - Path=/api/user-service/**
           filters:
             - TokenRelay
             - StripPrefix=1
         - id: cart
           uri: ${CART_SERVICE_URI:http://localhost:9001}
           predicates:
-            - Path=/api/**
+            - Path=/api/cart-service/**
           filters:
             - TokenRelay
             - StripPrefix=1
         - id: course
           uri: ${COURSE_SERVICE_URI:http://localhost:9002}
           predicates:
-            - Path=/api/**
+            - Path=/api/course-service/**
           filters:
             - TokenRelay
             - StripPrefix=1
+#        - id: reactjs
+#          uri: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
+#          predicates:
+#            - Path=/**
   #      routes:
   #        - id: user-service
   #          uri: ${USER_SERVICE_URI:http://localhost:9000}

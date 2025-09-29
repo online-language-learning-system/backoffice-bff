@@ -40,7 +40,8 @@ public class SecurityConfig {
                 .authorizeExchange(
                         authorizeExchangeSpec -> {
                             authorizeExchangeSpec
-                                    .anyExchange().authenticated();
+                                    .pathMatchers("/manifest.json", "/favicon.ico", "/static/**").permitAll()
+                                    .anyExchange().hasRole("admin");
                         }
                 )
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
