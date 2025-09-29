@@ -4,8 +4,6 @@ server:
 spring:
   application:
     name: backoffice-bff
-#  profiles:
-#    active: dev
   security:
     oauth2:
       client:
@@ -19,47 +17,56 @@ spring:
             client-secret: ${KEYCLOAK_CLIENT_SECRET_BACKOFFICE:hgDVSKURLE6VUsHT09AaZ3YlhYRy1JsF}
             scope: openid, profile, email, roles
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-
-#  config:
-#    active:
-#      on-profile: "dev"
   cloud:
     gateway:
       default-filters:
         - SaveSession
       routes:
-#        - id: user-service
-#          uri: ${USER_SERVICE_URI:http://localhost:9000}
-#          predicates:
-#            - Path=/api/user-service/**
-#          filters:
-#            - TokenRelay
-#            - StripPrefix=1
-#
-#        - id: course-service
-#          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
-#          predicates:
-#            - Path=/api/course-service/**
-#          filters:
-#            - TokenRelay
-#            - StripPrefix=1
-
-        - id: backoffice
-          uri: http://localhost:3040
+        - id: user
+          uri: ${USER_SERVICE_URI:http://localhost:9000}
           predicates:
-            - Path=/**
+            - Path=/api/**
           filters:
-            - RewritePath=/.*,/  # rewrite tất cả path về /
+            - TokenRelay
+            - StripPrefix=1
+        - id: cart
+          uri: ${CART_SERVICE_URI:http://localhost:9001}
+          predicates:
+            - Path=/api/**
+          filters:
+            - TokenRelay
+            - StripPrefix=1
+        - id: course
+          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
+          predicates:
+            - Path=/api/**
+          filters:
+            - TokenRelay
+            - StripPrefix=1
+  #      routes:
+  #        - id: user-service
+  #          uri: ${USER_SERVICE_URI:http://localhost:9000}
+  #          predicates:
+  #            - Path=/api/user-service/**
+  #          filters:
+  #            - TokenRelay
+  #            - StripPrefix=1
+  #
+  #        - id: course-service
+  #          uri: ${COURSE_SERVICE_URI:http://localhost:9002}
+  #          predicates:
+  #            - Path=/api/course-service/**
+  #          filters:
+  #            - TokenRelay
+  #            - StripPrefix=1
 
-
+logging:
+  level:
+    org.springframework.security: DEBUG
 
 service-uri:
   services:
+    backoffice: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
     user-service: ${USER_SERVICE_URI:http://localhost:9000}
-    course-service: ${COURSE_SERVICE_URI:http://localhost:9002}
-    token-identity: ${KEYCLOAK_TOKEN_URI:http://localhost:8080/realms/CourseRealm/protocol/openid-connect/token}
-  token-id: storefront-bff
-  token-secret: ${KEYCLOAK_CLIENT_SECRET_STOREFRONT:hgDVSKURLE6VUsHT09AaZ3YlhYRy1JsF}
+  token-id: backoffice-bff
+  token-secret: ${KEYCLOAK_CLIENT_SECRET_BACKOFFICE:hgDVSKURLE6VUsHT09AaZ3YlhYRy1JsF}

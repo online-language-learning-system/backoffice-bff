@@ -1,6 +1,6 @@
 package com.hub.backoffice_bff.dto;
 
-public record AuthenticatedUserVm(
+public record AuthenticatedUserDto(
         String username
 ) {
 }

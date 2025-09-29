@@ -1,7 +1,5 @@
 package com.hub.backoffice_bff.config;
 
-import org.springframework.cloud.gateway.route.RouteLocator;
-import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -10,14 +8,9 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcReactiveOAuth2UserService;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.web.server.logout.OidcClientInitiatedServerLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ReactiveClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.ReactiveOAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUserAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2UserAuthority;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -47,7 +40,7 @@ public class SecurityConfig {
                 .authorizeExchange(
                         authorizeExchangeSpec -> {
                             authorizeExchangeSpec
-                                    .anyExchange().permitAll();
+                                    .anyExchange().authenticated();
                         }
                 )
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
@@ -97,6 +90,7 @@ public class SecurityConfig {
                     mappedAuthorities.addAll(generateAuthoritiesFromClaim(roles));
                 }
             }
+
             System.out.println("ROLE: " + mappedAuthorities);
             return mappedAuthorities;
         };
@@ -109,12 +103,4 @@ public class SecurityConfig {
                 .collect(Collectors.toList());
     }
 
-    @Bean
-    public RouteLocator devFrontend(RouteLocatorBuilder builder) {
-        return builder.routes()
-                .route("frontend", r -> r.path("/**")
-                        .filters(f -> f.removeRequestHeader("Host"))
-                        .uri("http://localhost:3040"))
-                .build();
-    }
 }

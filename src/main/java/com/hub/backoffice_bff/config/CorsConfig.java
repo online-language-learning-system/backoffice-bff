@@ -13,7 +13,7 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOriginPattern("http://localhost:3040");            // Local FE
-        config.addAllowedOriginPattern("http://backoffice-reactjs:80");     // Container FE
+        config.addAllowedOriginPattern("http://backoffice:80");             // Container FE
         config.addAllowedOriginPattern("http://identity:8080");
         config.addAllowedMethod("*"); // GET, POST, PUT, DELETE, OPTIONS
         config.addAllowedHeader("*");
