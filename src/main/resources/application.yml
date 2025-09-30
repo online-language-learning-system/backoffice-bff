@@ -43,10 +43,11 @@ spring:
           filters:
             - TokenRelay
             - StripPrefix=1
-#        - id: reactjs
-#          uri: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
-#          predicates:
-#            - Path=/**
+        - id: reactjs
+          uri: ${BACKOFFICE_REACTJS_URI:http://localhost:3040}
+          predicates:
+            - Path=/**
+
   #      routes:
   #        - id: user-service
   #          uri: ${USER_SERVICE_URI:http://localhost:9000}
